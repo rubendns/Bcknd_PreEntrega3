@@ -6,7 +6,7 @@ const program = new Command();
 program
     .option('-d', 'Variable para debug', false)
     .option('-p <port>', 'Puerto del servidor', 3000)
-    .option('--mode <mode>', 'Modo de trabajo', 'dev')
+    .option('--mode <mode>', 'Modo de trabajo', 'DEVELOPMENT')
 program.parse();
 
 //console.log("Options: ", program.opts());
@@ -21,6 +21,8 @@ dotenv.config({
 export default {
     port: process.env.PORT,
     mongoUrl: process.env.MONGO_URL,
-    //adminName: process.env.ADMIN_NAME,
-    //adminPassword: process.env.ADMIN_PASSWORD
+    adminName: process.env.ADMIN_NAME,
+    adminPassword: process.env.ADMIN_PASSWORD,
+    gmailAccount: process.env.GMAIL_ACCOUNT,
+    gmailAppPassword: process.env.GMAIL_APP_PASSWD
 };

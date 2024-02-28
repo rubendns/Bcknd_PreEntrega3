@@ -15,7 +15,7 @@
     </div>
   </div>
   <div>
-    {{#each products}}
+    {{#each products.docs}}
       <div>
         <div>
           <img src="{{thumbnails}}" alt="Product Image" />
@@ -30,7 +30,7 @@
             <li class="list-group-item">Category: {{category}}</li>
           </ul>
           <div>
-            {{#each thumbnail}}
+            {{#each thumbnails}}
               <img
                 src="{{this}}"
                 alt="Thumbnail"

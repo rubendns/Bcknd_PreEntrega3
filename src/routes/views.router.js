@@ -4,7 +4,7 @@ import passport from 'passport';
 import jwt from 'jsonwebtoken';
 import { PRIVATE_KEY } from '../utils.js';
 import productsDao from "../services/dao/products.dao.js";
-//import cartsDao from "../dao/mdbManagers/carts.dao.js";
+import cartsDao from "../services/dao/carts.dao.js";
 import userModel from "../services/models/user.model.js";
 
 const viewsRouter = Router();
@@ -26,7 +26,7 @@ function auth(req, res, next) {
 }
 
 viewsRouter.get('/private', auth, (req, res) => {
-  res.send("Si estas viendo esto es porque pasaste la autorización a este recurso!");
+  res.send("If you are seeing this it is because you have passed authorization to this resource!");
 });
 
 
@@ -71,21 +71,21 @@ viewsRouter.get("/products", passport.authenticate('jwt', { session: false }), a
   }
 });
 
-// viewsRouter.get("/carts/", async (req, res) => {
-//   const carts = await cartsDao.getAllCarts();
-//   res.render("carts", {
-//     title: "Carts",
-//     carts,
-//   });
-// });
+viewsRouter.get("/carts/", async (req, res) => {
+  const carts = await cartsDao.getAllCarts();
+  res.render("carts", {
+    title: "Carts",
+    carts,
+  });
+});
 
-// viewsRouter.get("/carts/:cid", async (req, res) => {
-//   const { cid } = req.params;
-//   const cart = await cartsDao.getCartById(cid);
-//   res.render("cart", {
-//     title: "Cart",
-//     cart,
-//   });
-// });
+viewsRouter.get("/carts/:cid", async (req, res) => {
+  const { cid } = req.params;
+  const cart = await cartsDao.getCartById(cid);
+  res.render("cart", {
+    title: "Cart",
+    cart,
+  });
+});
 
 export { viewsRouter };
