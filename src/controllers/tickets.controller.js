@@ -1,4 +1,4 @@
-import TicketDao from "../services/db/ticket.dao.js";
+import TicketDao from "../services/dao/ticket.dao.js";
 const ticketDao = new TicketDao();
 
 export const createTicket = async (req, res) => {
@@ -9,6 +9,6 @@ export const createTicket = async (req, res) => {
     res.json(ticket);
   } catch (error) {
     console.error("Error creating ticket:", error);
-    // res.status(500).json({ success: false, error: "Error al crear el ticket" });
+    res.status(500).json({ success: false, error: "Error al crear el ticket" });
   }
 };

@@ -1,21 +1,12 @@
 import dotenv from 'dotenv';
-import { Command } from 'commander';
+import program from '../process.js';
 
-const program = new Command();
+const enviroment = program.opts().mode.toUpperCase();
 
-program
-    .option('-d', 'Variable para debug', false)
-    .option('-p <port>', 'Puerto del servidor', 3000)
-    .option('--mode <mode>', 'Modo de trabajo', 'DEVELOPMENT')
-program.parse();
-
-//console.log("Options: ", program.opts());
-console.log("Mode Option: ", program.opts().mode);
-
-const environment = program.opts().mode;
+console.log("Enviroment: ", enviroment === "DEV" ? "Development Mode" : "Production Mode");
 
 dotenv.config({
-    path: environment === "prod" ? "./src/config/.env.production" : "./src/config/.env.development"
+    path: enviroment === "DEV" ? "./src/config/.env.development" : "./src/config/.env.production"
 });
 
 export default {
