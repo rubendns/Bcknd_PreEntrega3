@@ -1,6 +1,9 @@
 import express from "express";
-import { ProductRouter } from "./routes/products.router.js";
-import { CartsRouter } from "./routes/carts.router.js";
+import UserExtendRouter from './routes/users.extend.router.js';
+import ProductsExtendRouter from './routes/products.extended.router.js';
+import CartExtendRouter from './routes/carts.extended.router.js';
+//import { ProductRouter } from "./routes/products.router.js";
+//import { CartsRouter } from "./routes/carts.router.js";
 import handlebars from "express-handlebars";
 import __dirname from "./utils.js";
 import { viewsRouter } from "./routes/views.router.js";
@@ -82,13 +85,21 @@ app.use(passport.session());
 app.use("/", viewsRouter);
 
 // Routes
-app.use("/users", userViewRouter);
+const userExtRouter = new UserExtendRouter();
+const productsExtRouter = new ProductsExtendRouter();
+const cartsExtRouter = new CartExtendRouter();
+
+//app.use("/users", userViewRouter);
+//app.use("/api/products", ProductRouter);
+//app.use("/api/carts", CartsRouter);
+app.use("/users", userExtRouter.getRouter());
+app.use("/api/products", productsExtRouter.getRouter());
+app.use("/api/carts", cartsExtRouter.getRouter());
+
+app.use("/api/email", emailRouter);
 app.use("/api/sessions", sessionsRouter);
 app.use("/api/jwt", jwtRouter);
 app.use("/github", githubLoginViewRouter);
-app.use("/api/products", ProductRouter);
-app.use("/api/carts", CartsRouter);
-app.use("/api/email", emailRouter);
 app.get("/failure", (req, res) => {
   res.status(404).send("Error: Page not found");
 });

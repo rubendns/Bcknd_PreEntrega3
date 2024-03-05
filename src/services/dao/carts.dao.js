@@ -14,28 +14,28 @@ class CartDao {
     return await cartModel.create({});
   }
 
-  async addProductToCart(cid, pid) {
-    const cart = await cartModel.findById(cid);
+  async addProductToCart(anId, productId, quantity) {
+    const cart = await cartModel.findOne({ $or: [{ _id: anId }, { userId: anId }] });
     if (!cart) {
       throw new Error("Cart not found");
     }
-    const product = await productModel.findById(pid);
+    const product = await pDao.getProductById(productId);
     if (!product) {
       throw new Error("Product not found");
     }
-    const existingProductIndex = cart.products.findIndex(
-      (item) => item.productId === pid
-    );
+    const { price } = product;
+    const total = price * quantity;
+    const existingProductIndex = cart.products.findIndex(item => item.productId.equals(productId));
     if (existingProductIndex !== -1) {
-      // Si el producto ya está en el carrito, aumenta su cantidad
-      cart.products[existingProductIndex].quantity++;
+      cart.products[existingProductIndex].quantity += Number(quantity);
     } else {
-      // Si el producto no está en el carrito, agrégalo al carrito
-      cart.products.push({ productId: pid, quantity: 1 });
+      cart.products.push({ productId, quantity });
     }
-    // Guardar el carrito actualizado en la base de datos
-    await cart.save();
-    return cart;
+    cart.total += Number(total);
+    cart.totalProducts += Number(quantity);
+    cart.updatedAt = new Date();
+
+    return cart.save();
   }
 
   async deleteProductFromCart(cid, pid) {
